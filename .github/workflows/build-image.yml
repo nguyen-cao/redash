@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Back-end Lint
         run: |
-          pip install -r requirement_dev.txt
+          pip install -r requirements_dev.txt
           ./bin/flake8_tests.sh
   test:
     runs-on: ubuntu-latest
