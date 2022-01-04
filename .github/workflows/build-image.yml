@@ -10,16 +10,18 @@ on:
 
 jobs:
 
-  build:
-
+  build-image:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag redash:$(date +%s)
+      run: docker build . --file Dockerfile --tag redash:$GITHUB_REF_NAME
     - name: Lint
-      run: ./bin/flake8_tests.sh
+      run: docker run --rm redash:$GITHUB_REF_NAME sh /app/bin/flake8_tests.sh
+  front-end-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: Front-end Test
       run: |
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
