@@ -29,7 +29,6 @@ jobs:
         nvm install 14.16.1
         yarn install
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
-        yarn bundle
         yarn test
 
   build:
