@@ -2,9 +2,11 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - *
   pull_request:
-    branches: [ master ]
+    branches:
+      - *
 
 jobs:
 
@@ -16,3 +18,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag redash:$(date +%s)
+    - name: Lint
+      run: ./bin/flake8_tests.sh
+    - name: Front-end Test
+      run: |
+        CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
+        yarn bundle
+        yarn test
