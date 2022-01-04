@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+      - 'qa'
+      - 'production'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Back-end Lint
+        run: |
+          pip install -r requirements_dev.txt
+          ./bin/flake8_tests.sh
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Front-end Test
+      shell: bash -l -eo pipefail {0}
+      run: |
+        echo $NVM_DIR
+        nvm ls
+        nvm install 14.16.1
+        yarn install
+        CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
+        yarn test
