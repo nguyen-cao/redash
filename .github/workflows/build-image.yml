@@ -9,21 +9,32 @@ on:
       - '*'
 
 jobs:
-
-  build-image:
+  check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag redash:$GITHUB_REF_NAME
-    - name: Lint
-      run: docker run --rm redash:$GITHUB_REF_NAME sh /app/bin/flake8_tests.sh
-  front-end-test:
+      - uses: actions/checkout@v2
+      - name: Back-end Lint
+        run: |
+          pip install -r requirement_dev.txt
+          ./bin/flake8_tests.sh
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Front-end Test
       run: |
+        nvm install
+        yarn install
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
         yarn bundle
         yarn test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [check, test]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag "redash:$GITHUB_REF_NAME"
+    - name: Lint
+      run: docker run --rm "redash:$GITHUB_REF_NAME" sh /app/bin/flake8_tests.sh
