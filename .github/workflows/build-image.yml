@@ -22,7 +22,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Front-end Test
+      shell: bash -l -eo pipefail {0}
       run: |
+        echo $NVM_DIR
+        nvm ls
         nvm install 14.16.1
         yarn install
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
