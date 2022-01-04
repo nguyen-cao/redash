@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Front-end Test
       run: |
-        sudo nvm install
+        nvm install 14.16.1
         yarn install
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
         yarn bundle
