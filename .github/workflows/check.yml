@@ -6,6 +6,8 @@ on:
       - 'master'
       - 'qa'
       - 'production'
+  workflow_call:
+
 
 jobs:
   check:
