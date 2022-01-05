@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [backend-lint]
     env:
-      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      REDASH_DATABASE_URL: "postgresql://postgres@localhost:5432/postgres"
       REDASH_COOKIE_SECRET: "c292a0a3aa32397cdb050e233733900f"
     services:
       postgres:
