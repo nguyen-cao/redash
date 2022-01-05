@@ -24,6 +24,7 @@ jobs:
     needs: [backend-lint]
     env:
       REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      REDASH_COOKIE_SECRET: "c292a0a3aa32397cdb050e233733900f"
     services:
       postgres:
         image: postgres:9.5-alpine
