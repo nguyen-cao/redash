@@ -8,7 +8,7 @@ on:
       - production
 jobs:
   validate:
-    uses: ${{github.repository}}/.github/workflows/check.yml@${{github.sha}}
+    uses: ${{github.repository_owner}}/redash/.github/workflows/check.yml@${{github.sha}}
 
   build:
     runs-on: ubuntu-latest
