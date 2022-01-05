@@ -10,23 +10,60 @@ on:
 
 
 jobs:
-  check:
+  backend-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Back-end Lint
+      - name: Backend Lint
         run: |
           pip install -r requirements_dev.txt
           ./bin/flake8_tests.sh
-  test:
+
+  backend-test:
+    runs-on: ubuntu-latest
+    needs: [backend-lint]
+    env:
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/tests"
+    services:
+      postgres:
+        image: postgres:9.5-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Backend Test
+        run: |
+          pip install -r requirements.txt requirements_dev.txt
+          docker exec postgres sh -c 'psql -U postgres -c "drop database if exists tests;" && psql -U postgres -c "create database tests;"'
+          python manage.py database create_tables
+          pytest tests/
+
+  frontend-lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Frontend Lint
+        shell: bash -l -eo pipefail {0}
+        run: |
+          nvm install 14.16.1
+          yarn lint
+
+  frontend-test:
+    runs-on: ubuntu-latest
+    needs: [frontend-lint]
+    steps:
     - uses: actions/checkout@v2
-    - name: Front-end Test
+    - name: Frontend Test
       shell: bash -l -eo pipefail {0}
       run: |
-        echo $NVM_DIR
-        nvm ls
         nvm install 14.16.1
         yarn install
         CYPRESS_INSTALL_BINARY=0 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 yarn --frozen-lockfile
