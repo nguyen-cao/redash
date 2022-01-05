@@ -8,7 +8,7 @@ on:
       - production
 jobs:
   validate:
-    uses: nguyen-cao/redash/.github/workflows/check.yml@${{ github.sha }}
+    uses: "nguyen-cao/redash/.github/workflows/check.yml@$GITHUB_SHA"
 
   build:
     runs-on: ubuntu-latest
