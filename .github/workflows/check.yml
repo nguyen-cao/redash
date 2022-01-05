@@ -48,7 +48,7 @@ jobs:
           pytest --version
           python manage.py database --help
           python manage.py database create-tables
-          pytest tests/
+#          pytest tests/
 
   frontend-lint:
     runs-on: ubuntu-latest
