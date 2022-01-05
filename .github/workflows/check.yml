@@ -44,6 +44,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r requirements_dev.txt
+          python --version
+          pytest --version
+          python manage.py database --help
           python manage.py database create_tables
           pytest tests/
 
