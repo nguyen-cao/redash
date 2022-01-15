@@ -77,7 +77,6 @@ case "$1" in
     ;;
   server)
     shift
-    create_db
     server
     ;;
   scheduler)
