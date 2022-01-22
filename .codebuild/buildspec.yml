@@ -22,6 +22,8 @@ phases:
       - python --version
       - pwd
       - ls
+      - echo Initialize database schema ...
+      - python manage.py database create_tables
       - docker build -t $ECR_REPO:$IMAGE_TAG -f Dockerfile .
       - docker tag $ECR_REPO:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
   post_build:
