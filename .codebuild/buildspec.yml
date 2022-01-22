@@ -11,8 +11,8 @@ phases:
       - git --version
       - make --version
       - pwd
-      - echo Install Python ...
-      - pyenv install
+      - echo Use Python 3.7.10 ...
+      - echo "3.7.10" > ./.python-version
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
