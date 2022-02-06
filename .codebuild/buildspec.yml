@@ -11,6 +11,9 @@ phases:
       - git --version
       - make --version
       - pwd
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+      - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - apt-get update && apt-get install terraform
       - echo Use Python 3.7.10 ...
       - echo "3.7.10" > ./.python-version
       - echo Logging in to Amazon ECR...
@@ -39,4 +42,6 @@ phases:
       - echo Pushing the Docker image...
       - aws ecr describe-repositories --repository-names ${ECR_REPO} || aws ecr create-repository --repository-name ${ECR_REPO}
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+      - terraform -chdir=deployments/tf/dev init
+      - terraform -chdir=clients/usedata/dev plan -var 'client=$CLIENT' -var 'team=$TEAM' -var 'image_tag=$IMAGE_TAG'
 
