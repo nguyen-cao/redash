@@ -24,3 +24,8 @@ variable "team" {
   type        = string
   default = "backend"
 }
+
+variable "doppler_token" {
+  type = string
+  description = "A token to authenticate with Doppler"
+}

@@ -1,6 +1,7 @@
 module "redash" {
   source = "../modules/redash"
   aws_region   = var.aws_region
+  doppler_token = var.doppler_token
   environment   = "dev"
   client = var.client
   team = var.team
