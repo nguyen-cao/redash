@@ -16,7 +16,6 @@ variable "image_tag" {
 variable "doppler_token" {
   type = string
   description = "A token to authenticate with Doppler"
-  default = "dp.pt.4U8B3RL00J4ASY5TKbZ7cMEPQNiBqhmCImbdWJBuknd"
 }
 
 variable "az_count" {
