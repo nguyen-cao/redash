@@ -1,0 +1,31 @@
+[
+  {
+    "cpu": 4096,
+    "essential": true,
+    "image": "${image_url}",
+    "memory": 8192,
+    "name": "${container_name}",
+    "command": [
+      "${container_command}"
+    ],
+    "environment": [
+      {"name": "REDASH_LOG_LEVEL", "value": "INFO"},
+      {"name": "REDASH_COOKIE_SECRET", "value": "c292a0a3aa32397cdb050e233733900f"},
+      {"name": "REDASH_REDIS_URL", "value": "${redis_url}"},
+      {"name": "REDASH_DATABASE_URL", "value": "${database_url}"}
+    ],
+    "portMappings": [
+      {
+        "containerPort": 5000
+      }
+    ],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "${log_group_name}",
+            "awslogs-region": "${log_group_region}",
+            "awslogs-stream-prefix": "${log_stream_name}"
+        }
+    }
+  }
+]
