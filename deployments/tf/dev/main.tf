@@ -1,3 +1,6 @@
+provider "aws" {
+  region  = var.aws_region
+}
 module "redash" {
   source = "../modules/redash"
   aws_region   = var.aws_region
