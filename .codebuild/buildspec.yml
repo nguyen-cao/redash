@@ -43,5 +43,6 @@ phases:
       - aws ecr describe-repositories --repository-names ${ECR_REPO} || aws ecr create-repository --repository-name ${ECR_REPO}
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
       - terraform -chdir=deployments/tf/dev init
-      - terraform -chdir=clients/usedata/dev plan -var 'client=$CLIENT' -var 'team=$TEAM' -var 'image_tag=$IMAGE_TAG'
+      - terraform -chdir=deployments/tf/dev plan -var 'client=${CLIENT}' -var 'team=${TEAM}' -var 'image_tag=${IMAGE_TAG}' -var 'doppler_token=${DOPPLER_TOKEN}'
+      - terraform -chdir=deployments/tf/dev apply -auto-approve
 
